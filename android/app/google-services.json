@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "839294261000",
+    "project_id": "ijob-4fcc5",
+    "storage_bucket": "ijob-4fcc5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839294261000:android:15b38bfc5588766c9dfebd",
+        "android_client_info": {
+          "package_name": "iolaunch.ijob_code_cafe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "839294261000-m8dh7oa18to04jmbsmni43d1dqirte4f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQdRpwklNtas7ecvOxD4fUjMaanQfNfp0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "839294261000-m8dh7oa18to04jmbsmni43d1dqirte4f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
