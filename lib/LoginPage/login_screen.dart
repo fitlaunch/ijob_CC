@@ -10,6 +10,8 @@ import '../ForgetPassword/forget_password_screen.dart';
 import '../Services/global_variables.dart';
 
 class Login extends StatefulWidget {
+  const Login({super.key});
+
   @override
   State<Login> createState() => _LoginState();
 }
@@ -57,14 +59,16 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     super.initState();
   }
 
-  void _submitFormOnLogin() async {
+  void _submitFormOnLogin() {
+    //removed 'async' to remove error on context line 73
     final isValid = _loginFormKey.currentState!.validate();
     if (isValid) {
       setState(() {
         _isLoading = true;
       });
       try {
-        await _auth.signInWithEmailAndPassword(
+        _auth.signInWithEmailAndPassword(
+          //removed 'await' to remove error on contex line 73
           email: _emailTextController.text.trim(),
           password: _passTextController.text.trim(),
         );
@@ -74,7 +78,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           _isLoading = false;
         });
         GlobalMethod.showErrorDialog(error: error.toString(), ctx: context);
-        print('error occurred $error');
       }
     }
     setState(() {
@@ -199,7 +202,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ForgetPassword(),
+                                  builder: (context) => const ForgetPassword(),
                                 ),
                               );
                             },

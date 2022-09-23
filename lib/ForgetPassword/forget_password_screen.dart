@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 class ForgetPassword extends StatefulWidget {
+  const ForgetPassword({super.key});
+
   @override
   State<ForgetPassword> createState() => _ForgetPasswordState();
 }
