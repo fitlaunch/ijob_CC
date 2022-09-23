@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:ijob_code_cafe/Samples/background_img_slide_anima.dart';
 import 'package:ijob_code_cafe/Services/global_method.dart';
 import 'package:ijob_code_cafe/SignupPage/signup_screen.dart';
 
@@ -31,6 +32,9 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   @override
   void dispose() {
     _animationController.dispose();
+    _emailTextController.dispose();
+    _passTextController.dispose();
+    _passFocusNode.dispose();
     super.dispose();
   }
 
@@ -251,23 +255,32 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                   text: '     ',
                                 ),
                                 TextSpan(
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const Signup(),
-                                          )),
-                                    text: 'SignUp',
-                                    style: const TextStyle(
-                                      color: Colors.cyan,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ))
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const Signup(),
+                                        )),
+                                  text: 'SignUp',
+                                  style: const TextStyle(
+                                    color: Colors.cyan,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
                         ),
+                        TextButton(
+                            onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BackgroundImgAnimation(),
+                                  ),
+                                ),
+                            child: const Text('animation demo'))
                       ],
                     ),
                   ),
