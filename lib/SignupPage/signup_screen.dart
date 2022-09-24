@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +15,9 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> with TickerProviderStateMixin {
   late Animation<double> _animation;
   late AnimationController _animationController;
+
+  final _signUpFormKey = GlobalKey<FormState>();
+  File? imageFile;
 
   @override
   void dispose() {
@@ -41,6 +46,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
         body: Stack(
       children: [
@@ -57,6 +63,52 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
           height: double.infinity,
           fit: BoxFit.cover,
           alignment: FractionalOffset(_animation.value, 0),
+        ),
+        Container(
+          color: Colors.black54,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 80),
+            child: ListView(
+              children: [
+                Form(
+                  key: _signUpFormKey,
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          //todo create showImageDialog
+                        },
+                        child: Container(
+                          width: size.width * 0.24,
+                          height: size.width * 0.24,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.cyanAccent,
+                            ),
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(18),
+                            child: imageFile == null
+                                ? const Icon(
+                                    Icons.camera_enhance_sharp,
+                                    color: Colors.cyan,
+                                    size: 30,
+                                  )
+                                : Image.file(
+                                    imageFile!,
+                                    fit: BoxFit.fill,
+                                  ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ],
     ));
