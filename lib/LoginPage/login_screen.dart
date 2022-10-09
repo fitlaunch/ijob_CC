@@ -8,6 +8,7 @@ import 'package:ijob_code_cafe/SignupPage/signup_screen.dart';
 
 import '../ForgetPassword/forget_password_screen.dart';
 import '../Services/global_variables.dart';
+import '../static_page.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -59,7 +60,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     super.initState();
   }
 
-  void _submitFormOnLogin() {
+  void _submitFormOnLogin() async {
     //removed 'async' to remove error on context line 73
     final isValid = _loginFormKey.currentState!.validate();
     if (isValid) {
@@ -67,12 +68,14 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
         _isLoading = true;
       });
       try {
-        _auth.signInWithEmailAndPassword(
-          //removed 'await' to remove error on contex line 73
+        await _auth.signInWithEmailAndPassword(
+          //removed 'await' to remove error on context line 73
           email: _emailTextController.text.trim(),
           password: _passTextController.text.trim(),
         );
-        Navigator.canPop(context) ? Navigator.pop(context) : null;
+        if (!mounted) return;
+        Navigator.pop(context);
+        //Navigator.canPop(context) ? Navigator.pop(context) : null;
       } catch (error) {
         setState(() {
           _isLoading = false;
@@ -283,7 +286,15 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                         const BackgroundImgAnimation(),
                                   ),
                                 ),
-                            child: const Text('animation demo'))
+                            child: const Text('animation demo')),
+                        TextButton(
+                            onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const StaticPage(),
+                                  ),
+                                ),
+                            child: const Text('no more animation please')),
                       ],
                     ),
                   ),
