@@ -2,13 +2,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:ijob_code_cafe/Samples/background_img_slide_anima.dart';
 import 'package:ijob_code_cafe/Services/global_method.dart';
 import 'package:ijob_code_cafe/SignupPage/signup_screen.dart';
 
 import '../ForgetPassword/forget_password_screen.dart';
 import '../Services/global_variables.dart';
+import '../static_page.dart';
 
 class Login extends StatefulWidget {
+  const Login({super.key});
+
   @override
   State<Login> createState() => _LoginState();
 }
@@ -31,6 +35,9 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   @override
   void dispose() {
     _animationController.dispose();
+    _emailTextController.dispose();
+    _passTextController.dispose();
+    _passFocusNode.dispose();
     super.dispose();
   }
 
@@ -54,6 +61,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   }
 
   void _submitFormOnLogin() async {
+    //removed 'async' to remove error on context line 73
     final isValid = _loginFormKey.currentState!.validate();
     if (isValid) {
       setState(() {
@@ -61,16 +69,18 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       });
       try {
         await _auth.signInWithEmailAndPassword(
+          //removed 'await' to remove error on context line 73
           email: _emailTextController.text.trim(),
           password: _passTextController.text.trim(),
         );
-        Navigator.canPop(context) ? Navigator.pop(context) : null;
+        if (!mounted) return;
+        Navigator.pop(context);
+        //Navigator.canPop(context) ? Navigator.pop(context) : null;
       } catch (error) {
         setState(() {
           _isLoading = false;
         });
         GlobalMethod.showErrorDialog(error: error.toString(), ctx: context);
-        print('error occurred $error');
       }
     }
     setState(() {
@@ -195,7 +205,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ForgetPassword(),
+                                  builder: (context) => const ForgetPassword(),
                                 ),
                               );
                             },
@@ -251,23 +261,40 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                   text: '     ',
                                 ),
                                 TextSpan(
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const Signup(),
-                                          )),
-                                    text: 'SignUp',
-                                    style: const TextStyle(
-                                      color: Colors.cyan,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ))
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const Signup(),
+                                        )),
+                                  text: 'SignUp',
+                                  style: const TextStyle(
+                                    color: Colors.cyan,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
                         ),
+                        TextButton(
+                            onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BackgroundImgAnimation(),
+                                  ),
+                                ),
+                            child: const Text('animation demo')),
+                        TextButton(
+                            onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const StaticPage(),
+                                  ),
+                                ),
+                            child: const Text('no more animation please')),
                       ],
                     ),
                   ),
