@@ -52,21 +52,24 @@ class _BackgroundImgAnimationState extends State<BackgroundImgAnimation>
           //   width: double.infinity,
           //   height: double.infinity,
           // ),
-          CachedNetworkImage(
-            imageUrl: demoUrlImage,
+          Opacity(
+            opacity: 0.7,
+            child: CachedNetworkImage(
+              imageUrl: demoUrlImage,
 
-            ///this placeholder option to splash logo or image prior to network image load
-            // placeholder: (context, url) => Image.asset(
-            //   'assets/images/HalfMoon.jpg',
-            //   fit: BoxFit.fill,
-            //   width: double.infinity,
-            //   height: double.infinity,
-            // ),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
-            width: double.infinity,
-            height: double.infinity,
-            fit: BoxFit.cover,
-            alignment: FractionalOffset(_animation.value, 0),
+              ///this placeholder option to splash logo or image prior to network image load
+              // placeholder: (context, url) => Image.asset(
+              //   'assets/images/HalfMoon.jpg',
+              //   fit: BoxFit.fill,
+              //   width: double.infinity,
+              //   height: double.infinity,
+              // ),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.cover,
+              alignment: FractionalOffset(_animation.value, 0),
+            ),
           ),
         ],
       ),

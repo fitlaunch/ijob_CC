@@ -5,3 +5,6 @@ String signupUrlImage =
     'https://images.squarespace-cdn.com/content/v1/51b3dc8ee4b051b96ceb10de/1557270667440-6S78WVOQQG5TCB578U86/image-asset.jpeg';
 String demoUrlImage =
     'https://scontent-sea1-1.xx.fbcdn.net/v/t31.18172-8/11802606_10206410138825177_8653013069845442938_o.jpg?_nc_cat=104&ccb=1-7&_nc_sid=19026a&_nc_ohc=Ua5IdQQTiqsAX_YaE-Q&_nc_ht=scontent-sea1-1.xx&oh=00_AT-epzHijLTt8cIDDcKcK9QvMhHYMGexUMY1re3z1Nc3sA&oe=63525377';
+
+String forgetUrlImage =
+    'https://4.bp.blogspot.com/-5_Oecl063RM/TjISLYUbT2I/AAAAAAAAFIE/_dq90wfvdgA/s1600/img-swg_togruta_jedi.jpg';
