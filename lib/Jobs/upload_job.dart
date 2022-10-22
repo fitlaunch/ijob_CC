@@ -28,7 +28,7 @@ class _UploadJobNowState extends State<UploadJobNow> {
   final TextEditingController _jobDescriptionController =
       TextEditingController();
   final TextEditingController _jobDeadlineController =
-      TextEditingController(text: 'Job Deadline Date');
+      TextEditingController(text: 'Pick Date');
 
   @override
   void dispose() {
@@ -329,14 +329,27 @@ class _UploadJobNowState extends State<UploadJobNow> {
                                 maxLength: 500,
                               ),
                               _textTitles(label: 'Job Deadline Date: '),
-                              _textFormFields(
-                                valueKey: 'JobDeadline',
-                                controller: _jobDeadlineController,
-                                enabled: false,
-                                fct: () {
-                                  _pickDateDialog();
-                                },
-                                maxLength: 100,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: _textFormFields(
+                                      valueKey: 'JobDeadline',
+                                      controller: _jobDeadlineController,
+                                      enabled: false,
+                                      fct: () {
+                                        _pickDateDialog();
+                                      },
+                                      maxLength: 100,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(
+                                        Icons.calendar_month_outlined),
+                                    onPressed: () => _pickDateDialog(),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
