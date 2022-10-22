@@ -40,15 +40,31 @@ class _JobScreenState extends State<JobScreen> {
             ),
           ),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text(
-                'What Up Dog?',
-                style: TextStyle(color: Colors.white),
-              ),
-            ],
+        body: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  'What Up Dog?',
+                  style: TextStyle(color: Colors.white),
+                ),
+                SizedBox(height: 10),
+
+                //ToDo: Not working.  Only spinner.  figure it out
+                //         VimeoVideoPlayer(
+                //           vimeoPlayerModel: VimeoPlayerModel(
+                //             url:
+                //                 'https://player.vimeo.com/video/762443651', //_vimeoVideoUrl,
+                //             deviceOrientation: DeviceOrientation.portraitUp,
+                //             systemUiOverlay: const [
+                //               SystemUiOverlay.top,
+                //               SystemUiOverlay.bottom,
+                //             ],
+                //           ),
+                //         ),
+              ],
+            ),
           ),
         ),
       ),
