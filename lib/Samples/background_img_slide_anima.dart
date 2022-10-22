@@ -45,7 +45,7 @@ class _BackgroundImgAnimationState extends State<BackgroundImgAnimation>
     return Scaffold(
       body: Stack(
         children: [
-          ///if image here, how to display 2 seconds before going to cachednetworkimage???
+          ///if image here, this how to display <2 seconds before going to cachednetworkimage???
           // Image.asset(
           //   'assets/images/HalfMoon.jpg',
           //   fit: BoxFit.fill,
