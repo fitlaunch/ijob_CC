@@ -8,3 +8,7 @@ String demoUrlImage =
 
 String forgetUrlImage =
     'https://4.bp.blogspot.com/-5_Oecl063RM/TjISLYUbT2I/AAAAAAAAFIE/_dq90wfvdgA/s1600/img-swg_togruta_jedi.jpg';
+
+String? name = '';
+String? userImage = '';
+String? location = '';
