@@ -61,7 +61,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   }
 
   void _submitFormOnLogin() async {
-    //removed 'async' to remove error on context line 73
     final isValid = _loginFormKey.currentState!.validate();
     if (isValid) {
       setState(() {
@@ -69,13 +68,12 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       });
       try {
         await _auth.signInWithEmailAndPassword(
-          //removed 'await' to remove error on context line 73
           email: _emailTextController.text.trim(),
           password: _passTextController.text.trim(),
         );
         if (!mounted) return;
-        Navigator.pop(context);
-        //Navigator.canPop(context) ? Navigator.pop(context) : null;
+        //Navigator.pop(context);
+        Navigator.canPop(context) ? Navigator.pop(context) : null;
       } catch (error) {
         setState(() {
           _isLoading = false;
