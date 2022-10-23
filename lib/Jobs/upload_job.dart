@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ijob_code_cafe/Services/global_method.dart';
@@ -151,10 +152,7 @@ class _UploadJobNowState extends State<UploadJobNow> {
                     Navigator.canPop(context) ? Navigator.pop(context) : null,
                 child: const Text(
                   'Cancel',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ],
@@ -210,14 +208,11 @@ class _UploadJobNowState extends State<UploadJobNow> {
           'jobDeadline': _jobDeadlineController.text,
           'deadlineTimeStamp': deadlineDateTimeStamp,
           'jobComments': [],
-
-          ///future to be built
           'recruitment': true,
-
-          ///future to be built
+          'createdAt': Timestamp.now(),
           'name': name,
           'userImage': userImage,
-          'location': location,
+          'address': address,
           'applicants': 0,
         });
         await Fluttertoast.showToast(
@@ -245,8 +240,29 @@ class _UploadJobNowState extends State<UploadJobNow> {
         });
       }
     } else {
-      print('Its not valid');
+      if (kDebugMode) {
+        print('Its not valid');
+      }
     }
+  }
+
+  void getMyData() async {
+    final DocumentSnapshot userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    setState(() {
+      name = userDoc.get('name');
+      userImage = userDoc.get('userImage');
+      address = userDoc.get('address');
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getMyData();
   }
 
   @override
