@@ -1,6 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:ijob_code_cafe/Services/global_method.dart';
+import 'package:uuid/uuid.dart';
 
 import '../Persistent/persistent.dart';
+import '../Services/global_variables.dart';
 import '../Widgets/bottom_nav_bar.dart';
 
 class UploadJobNow extends StatefulWidget {
@@ -12,15 +18,26 @@ class UploadJobNow extends StatefulWidget {
 
 class _UploadJobNowState extends State<UploadJobNow> {
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+  DateTime? picked;
+  Timestamp? deadlineDateTimeStamp;
 
   final TextEditingController _jobCategoryController =
       TextEditingController(text: 'Select');
   final TextEditingController _jobTitleController = TextEditingController();
   final TextEditingController _jobDescriptionController =
       TextEditingController();
-  final TextEditingController _jobDeadlineController = TextEditingController();
+  final TextEditingController _jobDeadlineController =
+      TextEditingController(text: 'Pick Date');
 
-  bool _isLoading = false;
+  @override
+  void dispose() {
+    super.dispose();
+    _jobCategoryController.dispose();
+    _jobDeadlineController.dispose();
+    _jobDescriptionController.dispose();
+    _jobTitleController.dispose();
+  }
 
   Widget _textTitles({required String label}) {
     return Padding(
@@ -145,6 +162,93 @@ class _UploadJobNowState extends State<UploadJobNow> {
         });
   }
 
+  void _pickDateDialog() async {
+    picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(
+        const Duration(days: 0),
+      ),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null) {
+      setState(() {
+        _jobDeadlineController.text =
+            '${picked!.year} - ${picked!.month} - ${picked!.day}';
+
+        ///need this for firebase?  works without.
+        deadlineDateTimeStamp = Timestamp.fromMicrosecondsSinceEpoch(
+            picked!.microsecondsSinceEpoch);
+      });
+    }
+  }
+
+  void _uploadTask() async {
+    final jobId = const Uuid().v4();
+    User? user = FirebaseAuth.instance.currentUser;
+    final _uid = user!.uid;
+    final isValid = _formKey.currentState!.validate();
+
+    if (isValid) {
+      if (_jobDeadlineController.text == 'Choose job Deadline date' ||
+          _jobCategoryController.text == 'Choose job category') {
+        GlobalMethod.showErrorDialog(
+            error: 'Please complete all fields', ctx: context);
+        return;
+      }
+      setState(() {
+        _isLoading = true;
+      });
+      try {
+        await FirebaseFirestore.instance.collection('jobs').doc(jobId).set({
+          'jobId': jobId,
+          'uploadedBy': _uid,
+          'email': user.email,
+          'jobCategory': _jobCategoryController.text,
+          'jobTitle': _jobTitleController.text,
+          'jobDescription': _jobDescriptionController.text,
+          'jobDeadline': _jobDeadlineController.text,
+          'deadlineTimeStamp': deadlineDateTimeStamp,
+          'jobComments': [],
+
+          ///future to be built
+          'recruitment': true,
+
+          ///future to be built
+          'name': name,
+          'userImage': userImage,
+          'location': location,
+          'applicants': 0,
+        });
+        await Fluttertoast.showToast(
+          msg: 'The task has been uploaded',
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Colors.grey,
+          fontSize: 18,
+        );
+        _jobTitleController.clear();
+        _jobDescriptionController.clear();
+        setState(() {
+          _jobCategoryController.text = 'Select Category';
+          _jobDeadlineController.text = 'Job Deadline';
+        });
+      } catch (error) {
+        {
+          setState(() {
+            _isLoading = false;
+          });
+          GlobalMethod.showErrorDialog(error: error.toString(), ctx: context);
+        }
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } else {
+      print('Its not valid');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -225,12 +329,27 @@ class _UploadJobNowState extends State<UploadJobNow> {
                                 maxLength: 500,
                               ),
                               _textTitles(label: 'Job Deadline Date: '),
-                              _textFormFields(
-                                valueKey: 'JobDeadline',
-                                controller: _jobDeadlineController,
-                                enabled: true,
-                                fct: () {},
-                                maxLength: 100,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: _textFormFields(
+                                      valueKey: 'JobDeadline',
+                                      controller: _jobDeadlineController,
+                                      enabled: false,
+                                      fct: () {
+                                        _pickDateDialog();
+                                      },
+                                      maxLength: 100,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(
+                                        Icons.calendar_month_outlined),
+                                    onPressed: () => _pickDateDialog(),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -242,7 +361,9 @@ class _UploadJobNowState extends State<UploadJobNow> {
                           child: _isLoading
                               ? const CircularProgressIndicator()
                               : MaterialButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _uploadTask();
+                                  },
                                   color: Colors.black,
                                   elevation: 8,
                                   shape: RoundedRectangleBorder(
