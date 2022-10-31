@@ -49,6 +49,8 @@ dependencies:
   cloud_firestore: ^3.4.6
   firebase_storage: ^10.3.7
   # vimeo_video_player: ^0.0.5
+  hooks_riverpod: ^2.0.2
+  flutter_riverpod: ^2.0.2
 
 
 dev_dependencies:

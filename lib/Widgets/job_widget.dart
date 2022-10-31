@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:ijob_code_cafe/Jobs/job_details.dart';
 import 'package:ijob_code_cafe/Services/global_method.dart';
 
 class JobWidget extends StatefulWidget {
   const JobWidget({
     Key? key,
+    required this.jobCategory,
     required this.jobTitle,
     required this.jobDescription,
     required this.jobId,
@@ -18,6 +20,7 @@ class JobWidget extends StatefulWidget {
     required this.address,
   }) : super(key: key);
 
+  final String jobCategory;
   final String jobTitle;
   final String jobDescription;
   final String jobId;
@@ -95,7 +98,16 @@ class _JobWidgetState extends State<JobWidget> {
         elevation: 8,
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         child: ListTile(
-          onTap: () {},
+          onTap: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => JobDetailsScreen(
+                    uploadedBy: widget.uploadedBy,
+                    jobID: widget.jobId,
+                  ),
+                ));
+          },
           onLongPress: () {
             _deleteDialog();
           },
@@ -153,8 +165,13 @@ class _JobWidgetState extends State<JobWidget> {
                       fontSize: 15,
                     ),
                   ),
-                  const Text(
-                      'something could go here, but would prefer category')
+                  Row(
+                    children: [
+                      const Icon(Icons.category_outlined, size: 12),
+                      const SizedBox(width: 5),
+                      Text(widget.jobCategory),
+                    ],
+                  )
                 ],
               ),
             ],

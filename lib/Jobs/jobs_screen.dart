@@ -78,9 +78,6 @@ class _JobScreenState extends State<JobScreen> {
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
-
-              /// not sure why we need the cancel.  does same as close.
-              /// maybe keep the below and dump the above as long as selection closes
               TextButton(
                 onPressed: () {
                   setState(() {
@@ -164,6 +161,8 @@ class _JobScreenState extends State<JobScreen> {
                         itemCount: snapshot.data?.docs.length,
                         itemBuilder: (BuildContext context, int index) {
                           return JobWidget(
+                            jobCategory: snapshot.data?.docs[index]
+                                ['jobCategory'],
                             jobTitle: snapshot.data?.docs[index]['jobTitle'],
                             jobDescription: snapshot.data?.docs[index]
                                 ['jobDescription'],
